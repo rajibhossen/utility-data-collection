@@ -6,7 +6,7 @@ class ApiRequest:
     def __init__(self):
         self.base_url = "https://api.eia.gov/v2/"
         self.data_endpoint = "electricity/rto/fuel-type-data/data"
-        self.api_key = "pCPxJdvTkhxchamZtC3UDvC8b8tgd7vox18Vtj32"
+        self.api_key = ""
 
     def generate_params(self, offset, start_date, end_date):
         params = {
