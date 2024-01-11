@@ -1,3 +1,6 @@
+import json
+import math
+
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -25,12 +28,26 @@ class ApiRequest:
         return params
 
     def get_with_pagination(self):
-        parameters = self.generate_params(offset=0, start_date="2024-01-01T00", end_date="2024-01-02T00")
-        request = requests.get(url=self.base_url + self.data_endpoint, params=parameters)
-        print(request.status_code)
-        print(request.headers)
-        response = request.text
-        print(response)
+        parameters = self.generate_params(offset=0, start_date="2023-01-01T00", end_date="2023-01-03T23")
+        response = requests.get(url=self.base_url + self.data_endpoint, params=parameters)
+        response_json = response.json()
+
+        total_data_length = int(response_json["response"]["total"])
+        print(total_data_length)
+        offset = 0
+        limit = 5000
+
+        iteration = math.ceil(total_data_length / limit)
+        for i in range(iteration):
+            parameters = self.generate_params(offset=offset, start_date="2023-01-01T00", end_date="2023-01-03T23")
+            response = requests.get(url=self.base_url + self.data_endpoint, params=parameters)
+            response_json = response.json()
+            actual_data = response_json["response"]["data"]
+
+            print(len(actual_data), offset)
+            offset = offset + limit
+
+
 
 
 call = ApiRequest()
